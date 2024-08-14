@@ -301,10 +301,20 @@
         }
 
         statusElt.innerText = "Received response.";
+
+
         responseElt.parentNode.hidden = false;
         responseElt.value = response.stringify(undefined, 2);
         infoElt.parentNode.hidden = false;
         infoElt.value = JSON.stringify(info, undefined, 2);
+      }
+
+      //**
+      //** AWS Bedrock Integration
+      //**
+      function passRespnseToAwsBedrock (response){
+
+
       }
 
       //Fires if error occurs during the request
