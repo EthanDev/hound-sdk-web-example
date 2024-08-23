@@ -117,7 +117,7 @@
 
       // UPDATE YOUR CLIENT ID HERE TO YOUR HOUNDIFY.COM CLIENT ID.
       // > [INSERT CLIENT ID BELOW]
-      const clientID = "0dlbaI_6QnXNKLyPlGgGVw==";
+      const clientID = "YOUR_CLIENT_ID";
       let conversationState = null;
       let voiceRequest = null;
 
@@ -301,20 +301,10 @@
         }
 
         statusElt.innerText = "Received response.";
-
-
         responseElt.parentNode.hidden = false;
         responseElt.value = response.stringify(undefined, 2);
         infoElt.parentNode.hidden = false;
         infoElt.value = JSON.stringify(info, undefined, 2);
-      }
-
-      //**
-      //** AWS Bedrock Integration
-      //**
-      function passRespnseToAwsBedrock (response){
-
-
       }
 
       //Fires if error occurs during the request
