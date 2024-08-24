@@ -3,7 +3,6 @@ var Houndify = require("houndify");
 var wav = require("wav");
 var fs = require("fs");
 var path = require("path");
-var axios = require("axios");
 
 //parse arguments
 var argv = require("minimist")(process.argv.slice(2));
