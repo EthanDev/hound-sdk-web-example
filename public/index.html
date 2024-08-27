@@ -50,8 +50,9 @@
         <!-- Left side - Image with overlay -->
         <div class="md:w-1/2 image-container">
           <img
-            src="https://www.hilton.com/im/en/CZMPCHH/7888781/czmpc-pool-3.jpg?impolicy=crop&cw=5000&ch=3203&gravity=NorthWest&xposition=0&yposition=64&rw=1280&rh=820"
-            alt="Desert pool view"
+            id="randomImage"
+            src="https://api-www.louvre.fr/sites/default/files/2021-01/cour-napoleon-et-pyramide_1.jpg"
+            alt="Random image"
           />
         </div>
 
@@ -99,6 +100,22 @@
       const statusElt = document.getElementById("status");
       const transcriptElt = document.getElementById("textQuery");
       const voiceIcon = document.getElementById("voiceIcon");
+      const randomImage = document.getElementById("randomImage");
+
+      // Array of image URLs
+      const imageUrls = [
+        "https://7700b77c.rocketcdn.me/wp-content/uploads/2020/12/%C2%A9-Mark-Nouss-Louvre-featured-image-copy.jpg",
+        "https://api-www.louvre.fr/sites/default/files/2021-03/la-grande-galerie.jpg",
+        "https://cdn-imgix.headout.com/mircobrands-content/image/27f00e3a867197d3148bd3ef45ed8934-Getting%20to%20Louvre.jpg",
+        "https://cdn.sanity.io/images/cxgd3urn/production/239d05677d51b8eafb8fc0cbe7591bb3d6272a70-1200x800.webp?rect=0,40,1200,720&w=1200&h=720&q=85&fit=crop&auto=format",
+        "https://www.unjourdeplusaparis.com/wp-content/uploads/2020/09/guide-de-visite-louvre.jpg",
+      ];
+
+      // Function to update the image
+      function updateRandomImage() {
+        const randomIndex = Math.floor(Math.random() * imageUrls.length);
+        randomImage.src = imageUrls[randomIndex];
+      }
 
       // UPDATE YOUR CLIENT ID HERE TO YOUR HOUNDIFY.COM CLIENT ID.
       const clientID = "0dlbaI_6QnXNKLyPlGgGVw==";
@@ -123,7 +140,6 @@
         if (voiceRequest) {
           voiceRequest.end();
         }
-        //statusElt.innerText = "Stopped recording. Waiting for response...";
         responseElt.innerText = "Getting your answer...";
         voiceIcon.classList.replace("bg-red-700", "bg-gray-600");
         document.getElementById("textSearchButton").disabled = false;
@@ -142,11 +158,9 @@
       });
 
       function initTextRequest() {
-        // Clear response area instead of hiding the parent
         responseElt.innerHTML = "<p>Response JSON will appear here.</p>";
         statusElt.innerText = "Sending text request...";
 
-        // Initialize TextRequest
         const textRequest = new Houndify.TextRequest({
           query: transcriptElt.value,
           clientId: clientID,
@@ -169,7 +183,6 @@
       }
 
       function initVoiceRequest(sampleRate) {
-        // Clear response area instead of hiding the parent
         responseElt.innerHTML = "<p>Response JSON will appear here.</p>";
 
         const voiceRequest = new Houndify.VoiceRequest({
@@ -184,7 +197,6 @@
           sampleRate: sampleRate,
           enableVAD: true,
           onTranscriptionUpdate: function (transcript) {
-            // Display the transcription in the green box (status)
             statusElt.innerText = transcript.PartialTranscript;
           },
           onResponse: async function (response, info) {
@@ -193,8 +205,8 @@
             const lQuery = response.AllResults[0].WrittenResponse;
             const lResponse = await callApi(lQuery);
 
-            // Display only the response from callApi in the grey box
             responseElt.innerText = lResponse;
+            updateRandomImage(); // Update the image after getting a response
           },
           onError: function (err, info) {
             recorder.stop();
@@ -222,6 +234,7 @@
         if (responseElt) {
           responseElt.innerHTML = JSON.stringify(response, null, 2);
         }
+        updateRandomImage(); // Update the image after getting a response
       }
 
       function onError(err, info) {
@@ -230,7 +243,6 @@
       }
 
       function onTranscriptionUpdate(transcript) {
-        // Display the transcription in the green box (status)
         statusElt.innerText = transcript.PartialTranscript;
       }
 
